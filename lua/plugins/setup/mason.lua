@@ -1,4 +1,12 @@
 require('mason').setup()
 require('mason-lspconfig').setup({
-  ensure_installed = { 'clangd', 'omnisharp' }
+  automatic_enable = true,
+  ensure_installed = { 'clangd','lua_ls' }
+})
+
+require("mason").setup({
+    registries = {
+        "github:mason-org/mason-registry",
+        "github:Crashdummyy/mason-registry",
+    },
 })

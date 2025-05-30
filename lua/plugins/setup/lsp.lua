@@ -1,36 +1,54 @@
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local lspConfig = require('lspconfig')
 
-require('lspconfig').omnisharp.setup({
-  capabilities = capabilities,
-  cmd = { "OmniSharp" },
-  enable_roslyn_analyzers = true,
-  organize_imports_on_format = true,
-  enable_import_completion = true,
-  filetypes = { 'cs' },
+lspConfig.lua_ls.setup({
+    capabilities = capabilities,
+    settings = {
+        Lua = {
+            runtime = {
+                version = 'LuaJIT',
+            },
+            diagnostics = {
+                globals = { 'vim' },
+            },
+            workspace = {
+                library = vim.api.nvim_get_runtime_file("", true),
+                checkThirdParty = false,
+            },
+            telemetry = {
+                enable = false,
+            },
+        },
+    },
+})
+
+lspConfig.roslyn.setup({
   on_attach = function(client, bufnr)
-    vim.keymap.set('n', '<C-.>', function()
-      vim.lsp.buf.code_action()
-    end, { buffer = bufnr, desc = "Code actions" })
-
-    vim.api.nvim_create_autocmd('DiagnosticChanged', {
-      callback = function()
-        vim.diagnostic.setqflist({ open = false })
-      end,
-      buffer = bufnr,
-    })
-  end
+    print("This will run when the server attaches!")
+  end,
+  settings = {
+    ["csharp|inlay_hints"] = {
+      csharp_enable_inlay_hints_for_implicit_object_creation = true,
+      csharp_enable_inlay_hints_for_implicit_variable_types = true,
+    },
+    ["csharp|code_lens"] = {
+      dotnet_enable_references_code_lens = true,
+    },
+  }
 })
 
-require('lspconfig').clangd.setup({
-  capabilities = capabilities,
-  cmd = {
-    "clangd",
-    "--background-index",
-    "--clang-tidy",
-    "--header-insertion=never",
-    "--all-scopes-completion",
-    "--completion-style=detailed",
-    "--offset-encoding=utf-16"
-  },
-  filetypes = { "c", "cpp", "h", "hpp" }
+lspConfig.clangd.setup({
+    capabilities = capabilities,
+    cmd = {
+      "clangd",
+      "--background-index",
+      "--clang-tidy",
+      "--header-insertion=never",
+      "--all-scopes-completion",
+      "--completion-style=detailed",
+      "--offset-encoding=utf-16"
+    },
+    filetypes = { "c", "cpp", "h", "hpp" }
 })
+
+
