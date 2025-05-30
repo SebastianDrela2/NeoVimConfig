@@ -1,71 +1,88 @@
-local fn = vim.fn
-local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-
-if fn.empty(fn.glob(install_path)) > 0 then
-  fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-  vim.cmd 'packadd packer.nvim'
-end
-
-return require('packer').startup(function(use)
-  use 'wbthomason/packer.nvim'
-
-  use 'powerman/vim-plugin-AnsiEsc'
-  use { 'Mofiqul/vscode.nvim' }
-  use { 'askfiy/visual_studio_code' }
-  use { 'catppuccin/nvim', as = 'catppuccin' }
-  use { 'marko-cerovac/material.nvim' }
-  use { 'rebelot/kanagawa.nvim' }
-  use { 'rafi/awesome-vim-colorschemes' }
-
-  use {
-    'preservim/nerdtree',
-    requires = 'ryanoasis/vim-devicons'
-  }
-  use {
-    'vim-airline/vim-airline',
-    requires = 'ryanoasis/vim-devicons'
-  }
-  use 'ryanoasis/vim-devicons'
-
-  use {
-    'nvim-treesitter/nvim-treesitter',
-    run = ':TSUpdate',
-    requires = {
-      'nvim-treesitter/playground'
-    }
-  }
-
-  use {
-    'williamboman/mason.nvim',
-    requires = {
-      'williamboman/mason-lspconfig.nvim',
-      'neovim/nvim-lspconfig'
-    }
-  }
-  use {
-    'hrsh7th/nvim-cmp',
-    requires = {
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path',
-      'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip'
-    }
-  }
-
-  use 'voldikss/vim-floaterm'
-  use 'sbdchd/neoformat'
-  use 'mg979/vim-visual-multi'
-
-  use {
-    'nvim-telescope/telescope.nvim',
-    requires = {
-      'nvim-lua/plenary.nvim',
-      { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
-    }
-  }
-
-  if packer_bootstrap then
-    require('packer').sync()
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
   end
-end)
+end
+vim.opt.rtp:prepend(lazypath)
+
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+
+require("lazy").setup({
+  spec = {
+   { "powerman/vim-plugin-AnsiEsc" },
+  { "Mofiqul/vscode.nvim" },
+  { "askfiy/visual_studio_code" },
+  { "catppuccin/nvim", name = "catppuccin" },
+  { "marko-cerovac/material.nvim" },
+  { "rebelot/kanagawa.nvim" },
+  { "rafi/awesome-vim-colorschemes" },
+  {
+    "preservim/nerdtree",
+    dependencies = { "ryanoasis/vim-devicons" }
+  },
+  {
+    "vim-airline/vim-airline",
+    dependencies = { "ryanoasis/vim-devicons" }
+  },
+  { "ryanoasis/vim-devicons" },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    dependencies = { "nvim-treesitter/playground" }
+  },
+  {
+    "williamboman/mason.nvim",
+    dependencies = {
+      "williamboman/mason-lspconfig.nvim",
+      "neovim/nvim-lspconfig"
+    }
+  },
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "L3MON4D3/LuaSnip",
+      "saadparwaiz1/cmp_luasnip"
+    }
+  },
+  { "voldikss/vim-floaterm" },
+  { "sbdchd/neoformat" },
+  { "mg979/vim-visual-multi" },
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" }
+    }
+  },
+  {
+    "folke/persistence.nvim",
+    config = function()
+      require("persistence").setup()
+    end
+  },
+  {
+    "seblyng/roslyn.nvim",
+    ft = "cs",
+    config = function()
+      require("roslyn").setup({})
+    end
+  }
+  },
+  install = { colorscheme = { "habamax" } },
+  -- automatically check for plugin updates
+  checker = { enabled = true },
+})

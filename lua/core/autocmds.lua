@@ -1,5 +1,19 @@
 local autocmd = vim.api.nvim_create_autocmd
 
+autocmd('VimLeavePre', {
+    callback = function()
+        require('persistence').save()
+    end
+})
+
+autocmd('VimEnter', {
+    callback = function()
+        if vim.fn.argc() == 0 then
+            require('persistence').load({ last = true })
+        end
+    end
+})
+
 autocmd('BufWritePre', {
   pattern = {'*.c', '*.cpp', '*.h', '*.hpp'},
   command = 'silent! Neoformat'

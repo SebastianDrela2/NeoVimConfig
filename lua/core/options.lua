@@ -1,10 +1,12 @@
 local opt = vim.opt
 
+opt.modifiable = true
 opt.number = true
 opt.relativenumber = true
 
 opt.mouse = 'a'
 
+opt.swapfile = false
 opt.encoding = 'UTF-8'
 opt.fileencoding = 'utf-8'
 
@@ -22,4 +24,9 @@ opt.expandtab = true
 opt.autoindent = true
 opt.smartindent = true
 
+opt.ignorecase = true
+opt.smartcase = true
+opt.hlsearch = true
+opt.wrap = false  
+opt.linebreak = true
 opt.updatetime = 250
