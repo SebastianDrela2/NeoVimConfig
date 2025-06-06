@@ -48,6 +48,9 @@ lspConfig.clangd.setup({
       "--completion-style=detailed",
       "--offset-encoding=utf-16"
     },
+    init_options = {
+        fallbackFlags = { '-std=c++23' },
+    },
     filetypes = { "c", "cpp", "h", "hpp" }
 })
 

@@ -69,12 +69,6 @@ require("lazy").setup({
     }
   },
   {
-    "folke/persistence.nvim",
-    config = function()
-      require("persistence").setup()
-    end
-  },
-  {
     "seblyng/roslyn.nvim",
     ft = "cs",
     config = function()
