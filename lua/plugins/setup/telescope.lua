@@ -86,6 +86,8 @@ if vim.fn.has('win32') == 1 then
 
   vim.api.nvim_set_keymap('n', 'fe', '<cmd>lua everything_live_search()<CR>', { noremap = true, silent = true })
 
+  vim.keymap.set("n", "<C-.>", vim.lsp.buf.code_action, { noremap = true, silent = true, desc = "LSP Code Action" })
+
   vim.schedule(function()
     vim.notify("[Everything] Search keymap 'fe' is now active", vim.log.levels.INFO)
   end)
