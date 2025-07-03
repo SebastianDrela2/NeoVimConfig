@@ -30,3 +30,11 @@ opt.hlsearch = true
 opt.wrap = false  
 opt.linebreak = true
 opt.updatetime = 250
+
+vim.g.neovide_cursor_animation_length = 0
+vim.g.neovide_cursor_trail_length = 0
+vim.g.neovide_cursor_vfx_mode = ""
+
+
+
+
