@@ -74,6 +74,17 @@ require("lazy").setup({
     config = function()
       require("roslyn").setup({})
     end
+  },
+  {
+      "mfussenegger/nvim-dap",
+  },
+  {
+      "rcarriga/nvim-dap-ui",
+      dependencies = { "mfussenegger/nvim-dap", "nvim-lua/plenary.nvim", "nvim-neotest/nvim-nio" },
+  },
+  {
+      "nvim-telescope/telescope-dap.nvim",
+      dependencies = { "nvim-telescope/telescope.nvim", "mfussenegger/nvim-dap" },
   }
   },
   install = { colorscheme = { "habamax" } },

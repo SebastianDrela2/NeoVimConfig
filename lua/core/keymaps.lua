@@ -1,11 +1,21 @@
 local keymap = vim.keymap
 
+vim.g.NERDTreeWinSize = 35
+
 vim.g.VM_leader = '\\'
 vim.g.VM_maps = {
   ['Add Cursor Down'] = '<C-j>',
   ['Add Cursor Up'] = '<C-k>',
   ['Exit'] = '<C-c>'
 }
+
+vim.api.nvim_create_autocmd({"BufWinEnter", "WinEnter"}, {
+    pattern = "NERD_tree_*",
+    callback = function()
+        local desired_width = 35
+        vim.cmd("vertical resize " .. desired_width)
+    end,
+})
 
 keymap.set('n', '<C-f>', function()
   local cur_file_dir = vim.fn.expand('%:p:h')
@@ -36,3 +46,11 @@ keymap.set('n', '<leader>ff', '<cmd>lua require(\'telescope.builtin\').find_file
 keymap.set('n', '<leader>fg', '<cmd>lua require(\'telescope.builtin\').live_grep({ cwd = vim.fn.expand(\'%:p:h\') })<CR>')
 keymap.set('n', '<leader>fb', '<cmd>lua require(\'telescope.builtin\').buffers()<CR>')
 keymap.set('n', '<leader>fh', '<cmd>lua require(\'telescope.builtin\').help_tags()<CR>')
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "nerdtree",
+    callback = function()
+        local desired_width = 35
+        vim.cmd("vertical resize " .. desired_width)
+    end
+})

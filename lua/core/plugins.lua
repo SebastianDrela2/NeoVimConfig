@@ -8,6 +8,7 @@ function M.load()
   require('plugins.setup.mason')
   require('plugins.setup.colorscheme')
   require('plugins.setup.runners')
+  require('plugins.setup.debug')
 end
 
 return M
