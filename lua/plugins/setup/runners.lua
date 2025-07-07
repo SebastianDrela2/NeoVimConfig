@@ -16,7 +16,6 @@ end
 
 function RunCSharp()
   local current_file_dir = vim.fn.expand('%:p:h')
-  local project_root = ''
   local search_path = current_file_dir .. ';' .. vim.fn.fnamemodify(current_file_dir, ':h:h')
   
   local proj_file = vim.fn.findfile('*.csproj', search_path)
@@ -54,6 +53,6 @@ function RunCode()
   end
 end
 
-vim.api.nvim_set_keymap('n', '<F5>', '<cmd>lua RunCode()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<S-F5>', '<cmd>lua RunCode()<CR>', { noremap = true, silent = true })
 
 return M

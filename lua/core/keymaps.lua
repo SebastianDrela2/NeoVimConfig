@@ -1,6 +1,7 @@
 local keymap = vim.keymap
 
 vim.g.NERDTreeWinSize = 35
+vim.g.floaterm_shell = 'powershell'
 
 vim.g.VM_leader = '\\'
 vim.g.VM_maps = {
@@ -8,13 +9,28 @@ vim.g.VM_maps = {
   ['Add Cursor Up'] = '<C-k>',
   ['Exit'] = '<C-c>'
 }
+vim.g._floaterm_active = false
 
-vim.api.nvim_create_autocmd({"BufWinEnter", "WinEnter"}, {
-    pattern = "NERD_tree_*",
+vim.api.nvim_create_autocmd("User", {
+    pattern = "FloatermOpen",
     callback = function()
-        local desired_width = 35
-        vim.cmd("vertical resize " .. desired_width)
+        vim.g._floaterm_active = true
     end,
+})
+
+vim.api.nvim_create_autocmd("User", {
+    pattern = "FloatermClose",
+    callback = function()
+        vim.g._floaterm_active = false
+    end,
+})
+
+vim.api.nvim_create_autocmd("WinEnter", {
+    callback = function()
+        if vim.bo.filetype == "nerdtree" and not vim.g._floaterm_active then
+            vim.cmd("vertical resize 35")
+        end
+    end
 })
 
 keymap.set('n', '<C-f>', function()
@@ -47,10 +63,4 @@ keymap.set('n', '<leader>fg', '<cmd>lua require(\'telescope.builtin\').live_grep
 keymap.set('n', '<leader>fb', '<cmd>lua require(\'telescope.builtin\').buffers()<CR>')
 keymap.set('n', '<leader>fh', '<cmd>lua require(\'telescope.builtin\').help_tags()<CR>')
 
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "nerdtree",
-    callback = function()
-        local desired_width = 35
-        vim.cmd("vertical resize " .. desired_width)
-    end
-})
+

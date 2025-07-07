@@ -19,73 +19,10 @@ dap.configurations.cs = {
     },
 }
 
-dapui.setup({
-    layouts = {
-        {
-            elements = {
-                { id = "scopes", size = 0.25 },
-                { id = "breakpoints", size = 0.25 },
-                { id = "stacks", size = 0.25 },
-                { id = "watches", size = 0.25 },
-            },
-            size = 40, 
-            position = "left",
-        },
-        {
-            elements = {
-                "repl",
-                "console",
-            },
-            size = 0.25, 
-            position = "bottom",
-        },
-    },
-    controls = {
-        enabled = true,
-        element = "repl",
-        icons = {
-            pause = "⏸",
-            play = "▶",
-            step_into = "⤵",
-            step_over = "⤼",
-            step_out = "⤴",
-            stop = "⏹",
-        },
-    },
-    floating = {
-        max_height = nil,
-        max_width = nil,
-        border = "rounded",
-        mappings = {
-            close = { "q", "<Esc>" },
-        },
-    },
-    render = {
-        max_type_length = nil,
-    },
-})
-
-dap.listeners.after.event_initialized["dapui_config"] = function()
-    dapui.open()
-end
-
-dap.listeners.before.event_terminated["dapui_config"] = function()
-    dapui.close()
-end
-dap.listeners.before.event_exited["dapui_config"] = function()
-    dapui.close()
-end
-
-local function close_dap_ui()
-    dapui.close()
-    vim.cmd('wincmd =') -- Rebalance windows
-end
-
+dapui.setup();
 
 dap.listeners.before.event_terminated["dapui_config"] = close_dap_ui
 dap.listeners.before.event_exited["dapui_config"] = close_dap_ui
-
-local dap = require('dap')
 
 dap.listeners.after.event_terminated["reset_nerdtree_width"] = function()
     for _, win in ipairs(vim.api.nvim_list_wins()) do

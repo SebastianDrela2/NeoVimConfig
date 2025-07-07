@@ -35,6 +35,5 @@ vim.g.neovide_cursor_animation_length = 0
 vim.g.neovide_cursor_trail_length = 0
 vim.g.neovide_cursor_vfx_mode = ""
 
-
-
-
+vim.o.guifont = "JetBrains Mono:h14"
+vim.g.neovide_font_features = { "calt", "liga", "clig", "dlig", "ss01", "ss02", "zero", "onum" }
